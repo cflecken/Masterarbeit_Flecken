@@ -1,3 +1,3 @@
 # Masterarbeit
 
-# Negative Campaigning als Kommunikationsstrategie im US-Präsidentschaftswahlkmapf 2024
+# Negative Campaigning als Kommunikationsstrategie im US-Präsidentschaftswahlkampf 2024
