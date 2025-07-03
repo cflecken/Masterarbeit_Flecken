@@ -1,0 +1,105 @@
+### Berechnung Intracoderreliabilität
+
+### Cohens's Kappa
+
+# Paket installieren
+
+install.packages("DescTools")
+library(DescTools)
+
+# Grundlage: Kreuztabelle
+
+ratertab_bewertungsrichtung <- xtabs (~ Codingsheet_Pretest_Intracoderrel$Bewertungsrichtung_1 + Codingsheet_Pretest_Intracoderrel$Bewertungsrichtung_2)
+ratertab_bewertungsrichtung
+
+ratertab_bewertungsziel <- xtabs (~ Codingsheet_Pretest_Intracoderrel$Bewertungsziel_1 + Codingsheet_Pretest_Intracoderrel$Bewertungsziel_2)
+ratertab_bewertungsziel
+
+ratertab_bewertungsobjekt <- xtabs (~ Codingsheet_Pretest_Intracoderrel$Bewertungsobjekt_1 + Codingsheet_Pretest_Intracoderrel$Bewertungsobjekt_2)
+ratertab_bewertungsobjekt
+
+ratertabs_affect <- xtabs (~ Codingsheet_Pretest_Intracoderrel$Affect_1 + Codingsheet_Pretest_Intracoderrel$Affect_2)
+ratertabs_affect
+
+ratertab_judgment <- xtabs (~ Codingsheet_Pretest_Intracoderrel$Judgement_1 + Codingsheet_Pretest_Intracoderrel$Judgement_2)
+ratertab_judgment
+
+ratertab_appreciation <- xtabs (~ Codingsheet_Pretest_Intracoderrel$Appreciation_1 + Codingsheet_Pretest_Intracoderrel$Appreciation_2)
+ratertab_appreciation
+
+ratertab_inzivilitaet <- xtabs (~ Codingsheet_Pretest_Intracoderrel$Inzivilität_1 + Codingsheet_Pretest_Intracoderrel$Inzivilität_2)
+ratertab_inzivilitaet
+
+# Berechnung Cohen's Kappa
+
+CohenKappa(ratertab_bewertungsrichtung)
+CohenKappa(ratertab_bewertungsziel)
+CohenKappa(ratertab_bewertungsobjekt)
+CohenKappa(ratertabs_affect)
+CohenKappa(ratertab_judgment)
+CohenKappa(ratertab_appreciation)
+CohenKappa(ratertab_inzivilitaet)
+
+# Ergebnisse auf zwei Nachkommastellen gerundet
+
+# Bewertungsrichtung: 0.93
+# Bewertungsziel: 0.97
+# Bewertungsobjekt: 0.87
+# Affect: 0.98
+# Judgment: 0.92
+# Appreciation: 0.97
+# Inzivilität: 0.98
+
+
+
+### Krippendorff's Alpha
+
+# Subsets aus Datensatz ziehen
+
+data_bewertungsrichtung <- subset(Codingsheet_Pretest_Intracoderrel, select = c(Bewertungsrichtung_1, Bewertungsrichtung_2))
+data_bewertungsziel <- subset(Codingsheet_Pretest_Intracoderrel, select = c(Bewertungsziel_1, Bewertungsziel_2))
+data_bewertungsobjekt <- subset(Codingsheet_Pretest_Intracoderrel, select = c(Bewertungsobjekt_1, Bewertungsobjekt_2))
+data_affect <- subset(Codingsheet_Pretest_Intracoderrel, select = c(Affect_1, Affect_2))
+data_judgment <- subset(Codingsheet_Pretest_Intracoderrel, select = c(Judgement_1, Judgement_2))
+data_appreciation <- subset(Codingsheet_Pretest_Intracoderrel, select = c(Appreciation_1, Appreciation_2))
+data_inzivilitaet <- subset(Codingsheet_Pretest_Intracoderrel, select = c(Inzivilität_1, Inzivilität_2))
+
+# Umwandlung Dataframe in Matrix
+
+data_bewertungsrichtung2 <- as.matrix(data_bewertungsrichtung)
+data_bewertungsziel2 <- as.matrix(data_bewertungsziel)
+data_bewertungsobjekt2 <- as.matrix(data_bewertungsobjekt)
+data_affect2 <- as.matrix(data_affect)
+data_judgment2 <- as.matrix(data_judgment)
+data_appreciation2 <- as.matrix(data_appreciation)
+data_inzivilitaet2 <- as.matrix(data_inzivilitaet)
+
+# Zeilen und Spalten tauschen
+
+data_bewertungsrichtung3 <- t(data_bewertungsrichtung2)
+data_bewertungsziel3 <- t(data_bewertungsziel2)
+data_bewertungsobjekt3 <- t(data_bewertungsobjekt2)
+data_affect3 <- t(data_affect2)
+data_judgment3 <- t(data_judgment2)
+data_appreciation3 <- t(data_appreciation2)
+data_inzivilitaet3 <- t(data_inzivilitaet2)
+
+# Berechnung Krippendorff's Alpha
+
+KrippAlpha(data_bewertungsrichtung3, method = "nominal")
+KrippAlpha(data_bewertungsziel3, method = "nominal")
+KrippAlpha(data_bewertungsobjekt3, method = "nominal")
+KrippAlpha(data_affect3, method = "nominal")
+KrippAlpha(data_judgment3, method = "nominal")
+KrippAlpha(data_appreciation3, method = "nominal")
+KrippAlpha(data_inzivilitaet3, method = "nominal")
+
+# Ergebnisse auf zwei Nachkommastellen gerundet
+
+# Bewertungsrichtung: 0.93
+# Bewertungsziel: 0.97
+# Bewertungsobjekt: 0.87
+# Affect: 0.98
+# Judgment: 0.92
+# Appreciation: 0.97
+# Inzivilität: 0.98
