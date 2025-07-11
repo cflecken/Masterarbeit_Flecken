@@ -1,0 +1,176 @@
+### Hypothesen
+
+### H1 Negative Bewertungen, die von Donald Trump geäußert werden, lassen sich überwiegend der Judgment-Kategorie zuordnen (H1a)
+### und richten sich hauptsächlich gegen Kamala Harris (H1b). Ihre negativen Bewertungen zielen dagegen meistens auf Trump.
+
+### H1a
+
+# Beobachtete Häufigkeiten
+xtab_NamexAttitude <- table(subsample.negative$Name, subsample.negative$`Attitude-Kategorie`)
+print(xtab_NamexAttitude)
+
+# Erwartetet Häufigkeiten
+install.packages("gmodels")
+library(gmodels)
+
+CrossTable(xtab_NamexAttitude,
+           prop.c = FALSE, prop.r = FALSE, prop.t = FALSE, 
+           prop.chisq = FALSE,
+           expected = TRUE)
+
+# Exakter Fisher-Test
+fisher.test(subsample.negative$Name, subsample.negative$`Attitude-Kategorie`)
+# p-value = 0.05984
+
+
+### H1b
+
+# Beobachtete Häufigkeiten
+subsample.negative$Bewertungsziel[subsample.negative$Bewertungsziel == 9] <- NA
+table(is.na(subsample.negative$Bewertungsziel))
+
+xtab_NamexBewZiel <- table(subsample.negative$Bewertungsziel, subsample.negative$Name)
+print(xtab_NamexBewZiel)
+
+# Erwartete Häufigkeiten
+CrossTable(xtab_NamexBewZiel,
+           prop.c = FALSE, prop.r = FALSE, prop.t = FALSE, 
+           prop.chisq = FALSE,
+           expected = TRUE)
+
+# Exakter Fisher-Test
+fisher.test(xtab_NamexBewZiel)
+# p-value = 2.2e-16
+
+# Cramer's V
+install.packages("lsr")
+library(lsr)
+cramersV(xtab_NamexBewZiel)
+# Cramer's V = 1
+
+
+
+### H2 Negative Bewertungen, die von Kamala Harris geäußert werden, lassen sich überwiegend der 
+### Judgment-Unterkategorie Anstand zuordnen (H2b).
+
+# Beobachtete Häufigkeiten
+subsample.negative$Judgement[subsample.negative$Judgement == 99] <- NA
+table(is.na(subsample.negative$Judgement))
+
+xtab_NamexJudgment <- table(subsample.negative$Name, subsample.negative$Judgement)
+print(xtab_NamexJudgment)
+
+# Erwartete Häufigkeiten
+CrossTable(xtab_NamexJudgment,
+           prop.c = FALSE, prop.r = FALSE, prop.t = FALSE, 
+           prop.chisq = FALSE,
+           expected = TRUE)
+
+# Exakter Fisher-Test
+fisher.test(xtab_NamexJudgment)
+# p-value = 0.6833
+
+
+
+### H3: Negative Äußerungen auf X enthalten häufiger Inzivilität als in der TV-Debatte.
+
+# Beobachtete Häufigkeiten
+xtab_KommkanalxInz <- table(subsample.negative$Kommunikationskanal, subsample.negative$Inzivilität)
+print(xtab_KommkanalxInz)
+
+# Erwartete Häufigkeiten
+CrossTable(xtab_KommkanalxInz,
+           prop.c = FALSE, prop.r = FALSE, prop.t = FALSE, 
+           prop.chisq = FALSE,
+           expected = TRUE)
+
+# Chi-Quadrat-Test
+chisq.test(subsample.negative$Kommunikationskanal, subsample.negative$Inzivilität)
+# X-squared = 36.071, df = 1, p-value = 1.903e-09
+
+# Cramer's V
+cramersV(xtab_KommkanalxInz)
+# Cramer's V = 0.3761049
+
+
+
+### H4: Es besteht ein Zusammenhang zwischen den Kommunikator:innen und dem Vorkommen von Inzivilität auf X.
+
+filter(subsample.negative, Kommunikationskanal == "2")
+subsample.x <- filter(subsample.negative, Kommunikationskanal == "2")
+
+# Beobachtete Häufigkeiten
+xtab_NamexInz <- table(subsample.x$Name, subsample.x$Inzivilität)
+print(xtab_NamexInz)
+
+# Erwartete Häufigkeiten
+CrossTable(xtab_NamexInz,
+           prop.c = FALSE, prop.r = FALSE, prop.t = FALSE, 
+           prop.chisq = FALSE,
+           expected = TRUE)
+
+# Exakter Fisher-Test
+fisher.test(subsample.x$Name, subsample.x$Inzivilität)
+# p-value = p-value = 0.5496
+
+
+
+###H5: Trumps Äußerungen enthalten in der TV-Debatte weniger Negativität als in der Kommunikation auf X.
+
+# Bewertungsrichtung zu dichotomer Variable umwandeln
+install.packages("sjmisc")
+library(sjmisc)
+
+filter(Codingsheet_Gesamtsample, Name == "2")
+subsample.trump2 <- filter(Codingsheet_Gesamtsample, Name == "2")
+summary(subsample.trump2)
+
+subsample.trump2 <- subsample.trump2 |>
+  mutate(Bewertungsrichtung_neg_JN = rec(Bewertungsrichtung,
+                                         rec = "1 = 1 [JA]; 2,3,9 = 2 [NEIN]"))
+subsample.trump2 |> sjmisc::frq(Bewertungsrichtung_neg_JN)
+
+
+# Beobachtete Häufigkeiten
+xtab_KommkanalxNeg <- table(subsample.trump2$Kommunikationskanal, subsample.trump2$Bewertungsrichtung_neg_JN)
+print(xtab_KommkanalxNeg)
+
+# Erwartete Häufigkeiten
+CrossTable(xtab_KommkanalxNeg,
+           prop.c = FALSE, prop.r = FALSE, prop.t = FALSE, 
+           prop.chisq = FALSE,
+           expected = TRUE)
+
+# Chi-Quadrat-Test
+chisq.test(subsample.trump2$Kommunikationskanal, subsample.trump2$Bewertungsrichtung_neg_JN)
+
+# X-squared = 27.326, df = 1, p-value = 1.719e-07
+
+# Cramer's V
+cramersV(xtab_KommkanalxNeg)
+# Cramer's V = 0.2512138
+
+
+
+### Forschungsfrage
+
+### FF2
+
+# Beobachtete Häufigkeiten
+xtab_KommkanalxAttitude <- table(subsample.negative$Kommunikationskanal, subsample.negative$`Attitude-Kategorie`)
+print(xtab_KommkanalxAttitude)
+
+# Erwartete Häufigkeiten
+CrossTable(xtab_KommkanalxAttitude,
+           prop.c = FALSE, prop.r = FALSE, prop.t = FALSE, 
+           prop.chisq = FALSE,
+           expected = TRUE)
+
+# Exakter Fisher-Test
+fisher.test(xtab_KommkanalxAttitude)
+# p-value = 0.0229
+
+# Cramer's V
+cramersV(xtab_KommkanalxAttitude)
+# Cramer's V = 0.1516827
+
