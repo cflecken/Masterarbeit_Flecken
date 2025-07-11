@@ -42,13 +42,13 @@ CohenKappa(ratertab_inzivilitaet)
 
 # Ergebnisse auf zwei Nachkommastellen gerundet
 
-# Bewertungsrichtung: 0.93
-# Bewertungsziel: 0.97
-# Bewertungsobjekt: 0.87
-# Affect: 0.98
-# Judgment: 0.92
-# Appreciation: 0.97
-# Inzivilität: 0.98
+# Bewertungsrichtung: 0.94
+# Bewertungsziel: 0.98
+# Bewertungsobjekt: 0.89
+# Affect: 0.99
+# Judgment: 0.93
+# Appreciation: 0.98
+# Inzivilität: 0.99
 
 
 
@@ -96,10 +96,10 @@ KrippAlpha(data_inzivilitaet3, method = "nominal")
 
 # Ergebnisse auf zwei Nachkommastellen gerundet
 
-# Bewertungsrichtung: 0.93
-# Bewertungsziel: 0.97
-# Bewertungsobjekt: 0.87
-# Affect: 0.98
-# Judgment: 0.92
-# Appreciation: 0.97
-# Inzivilität: 0.98
+# Bewertungsrichtung: 0.94
+# Bewertungsziel: 0.98
+# Bewertungsobjekt: 0.89
+# Affect: 0.99
+# Judgment: 0.93
+# Appreciation: 0.98
+# Inzivilität: 0.99
